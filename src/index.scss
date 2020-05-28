@@ -32,6 +32,14 @@ code {
     justify-content: space-around;
     width: 100%;
     margin-bottom: 24px;
+
+    img {
+      max-width: 420px;
+
+      @media screen and (max-width: 425px) {
+        max-width: 80%;
+      }
+    }
   }
 
   @media screen and (max-width: 425px) {
