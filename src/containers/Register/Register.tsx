@@ -26,6 +26,7 @@ const Register: React.FC = () => {
         mobile = parseInt(mobile);
         const user = await authStore.register({ name, mobile, sponsorId, password });
         localStorage.setItem('user', JSON.stringify(user));
+        alert(`id: ${user.id}\npassword: ${password}`);
         setLoading(false);
     };
 

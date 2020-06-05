@@ -1,11 +1,17 @@
 import { observable, action } from 'mobx';
 import { User, RegistrationDTO, LoginDTO } from '../interfaces';
 import Api from '../api';
+import { MembersStore } from './MembersStore';
+import { IncomeStore } from './IncomeStore';
 
 export default class AuthStore {
     @observable user: User | null = null;
 
-    constructor(user: User | null) {
+    constructor(
+        user: User | null,
+        private membersStore: MembersStore,
+        private incomeStore: IncomeStore,
+    ) {
         this.user = user;
     }
 
@@ -33,5 +39,7 @@ export default class AuthStore {
     @action
     logout() {
         this.user = null;
+        this.membersStore.clearStore();
+        this.incomeStore.clearStore();
     }
 }

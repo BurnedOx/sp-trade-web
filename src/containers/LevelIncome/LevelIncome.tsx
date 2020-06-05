@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Table, Divider } from 'antd';
 import { useStore } from '../../utils/hooks';
-import { LevelIncomeContext } from '../../store';
+import { IncomeContext } from '../../store';
 import { observer } from 'mobx-react-lite';
 
 const columns = [
@@ -38,7 +38,7 @@ const columns = [
 ];
 
 const LevelIncome: React.FC = () => {
-    const levelIncomeStore = useStore(LevelIncomeContext);
+    const levelIncomeStore = useStore(IncomeContext);
 
     useEffect(() => {
         async function fetchMembers() {

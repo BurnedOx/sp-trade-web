@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Table, Divider } from 'antd';
+import { useStore } from '../../utils/hooks';
+import { IncomeContext } from '../../store';
 
 const columns = [
     {
@@ -30,8 +32,22 @@ const columns = [
 ];
 
 const SingleLegIncome: React.FC = () => {
+    const incomeStore = useStore(IncomeContext);
 
-    const data: any = [];
+    useEffect(() => {
+        async function load() {
+            if (incomeStore.roiIncomes.length === 0) {
+                await incomeStore.loadRoiIncomes();
+            }
+        }
+        load();
+        // eslint-disable-next-line
+    }, []);
+
+    const data = incomeStore.roiIncomes.map((roi, key) => {
+        const { id, credit, currentBalance: current, createdAt, rank } = roi;
+        return { key, id, credit, current, trDate: new Date(createdAt).toUTCString(), rank };
+    });
 
     return (
         <React.Fragment>

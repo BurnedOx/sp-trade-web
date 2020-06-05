@@ -25,7 +25,7 @@ const AppLayout: React.FC = (props) => {
                         {props.children}
                     </div>
                 </Content>
-                <Footer style={{ textAlign: 'center' }}>Copyright © 2020 SP Trade. All rights reserved.</Footer>
+                <Footer style={{ textAlign: 'center' }}>Copyright © 2018 SP-Trade. All rights reserved.</Footer>
             </Layout>
         </Layout>
     );

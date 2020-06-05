@@ -3,20 +3,20 @@ import * as Store from './store';
 import { getUser } from './utils/getUser';
 import AuthStore from './store/AuthStore';
 import { MembersStore } from './store/MembersStore';
-import { LevelIncomeStore } from './store/LevelIncomeStore';
+import { IncomeStore } from './store/IncomeStore';
 
 const ContextProvider: React.FC = (props) => {
     const user = getUser();
-    const authStore = new AuthStore(user);
     const membersStore = new MembersStore();
-    const levelIncomeStore = new LevelIncomeStore();
+    const incomeStore = new IncomeStore();
+    const authStore = new AuthStore(user, membersStore, incomeStore);
 
     return (
         <Store.AuthContext.Provider value={authStore}>
             <Store.MembersContext.Provider value={membersStore}>
-                <Store.LevelIncomeContext.Provider value={levelIncomeStore}>
+                <Store.IncomeContext.Provider value={incomeStore}>
                     {props.children}
-                </Store.LevelIncomeContext.Provider>
+                </Store.IncomeContext.Provider>
             </Store.MembersContext.Provider>
         </Store.AuthContext.Provider>
     );

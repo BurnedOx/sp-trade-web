@@ -1,10 +1,11 @@
 import { observable, action } from 'mobx';
-import { Member } from '../interfaces';
+import { Member, SingleLeg } from '../interfaces';
 import Api from '../api';
 
 export class MembersStore {
     @observable directs: Member[] = [];
     @observable dowlines: Member[] = [];
+    @observable singleLeg: SingleLeg[] = [];
 
     @action
     async loadDirect() {
@@ -22,7 +23,24 @@ export class MembersStore {
     }
 
     @action
-    async clearDownlines() {
+    clearDownlines() {
         this.dowlines = [];
+    }
+
+    @action
+    async loadSingleLeg() {
+        this.singleLeg = await Api.getSingleLegs();
+    }
+
+    @action
+    clearSingleLeg() {
+        this.singleLeg = [];
+    }
+
+    @action
+    clearStore() {
+        this.directs = [];
+        this.dowlines = [];
+        this.singleLeg = [];
     }
 }

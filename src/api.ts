@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 import { getUser } from './utils/getUser';
-import { RegistrationDTO, User, LoginDTO, Member, Income } from './interfaces';
+import { RegistrationDTO, User, LoginDTO, Member, Income, SingleLeg, ROI } from './interfaces';
 
 export default abstract class Api {
     private static instance: AxiosInstance;
@@ -31,10 +31,8 @@ export default abstract class Api {
         return (await Api.instance.post('/accounts/login', data)).data;
     }
 
-    // E-Pin Api
-
     static async activateAccount(id: string): Promise<User> {
-        return (await Api.instance.put('/epin', { id })).data;
+        return (await Api.instance.put('/accounts/activate', { id })).data;
     }
 
     // Members Api
@@ -47,10 +45,18 @@ export default abstract class Api {
         return (await Api.instance.get('/members/downline')).data;
     }
 
+    static async getSingleLegs(): Promise<SingleLeg[]> {
+        return (await Api.instance.get('/members/single-leg')).data;
+    }
+
     // Incomes Api
 
     static async getLevelIncomes(): Promise<Income[]> {
         return (await Api.instance.get('/income')).data;
+    }
+
+    static async getROI(): Promise<ROI[]> {
+        return (await Api.instance.get('/roi')).data;
     }
 }
 

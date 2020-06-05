@@ -18,6 +18,7 @@ export interface User {
     status: 'active' | 'inactive';
     activatedAt: Date | null;
     balance: number;
+    rank: string | null;
     updatedAt: Date;
     createdAt: Date;
     token: string;
@@ -30,6 +31,12 @@ export interface Member {
     status: 'active' | 'inactive';
     activatedAt: Date | null;
     createdAt: Date;
+}
+
+export interface SingleLeg {
+    id: string;
+    name: string;
+    activatedAt: string;
 }
 
 export interface Epin {
@@ -46,6 +53,15 @@ export interface Income {
     level: number,
     amount: number,
     createdAt: Date
+}
+
+export interface ROI {
+    id: string;
+    credit: number;
+    currentBalance: number;
+    rank: string;
+    updatedAt: Date;
+    createdAt: Date;
 }
 
 export interface RegistrationDTO {

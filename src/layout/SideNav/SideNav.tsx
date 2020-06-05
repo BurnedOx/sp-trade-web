@@ -21,7 +21,7 @@ const SideNav: React.FC<RouteComponentProps> = (props) => {
 
     return (
         <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
-            <div className='logo'>SP Trade</div>
+            <div className='logo'>SP</div>
             <Menu theme='dark' defaultSelectedKeys={['Dashboard']} mode='inline'>
                 <SubMenu key={'Home'} icon={<DashboardOutlined />} title='Home'>
                     <Menu.Item key='Dashboard' onClick={() => props.history.push('')}>

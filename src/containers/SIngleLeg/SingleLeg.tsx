@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Table, Divider } from 'antd';
+import { useStore } from '../../utils/hooks';
+import { MembersContext } from '../../store';
 
 const columns = [
     {
@@ -20,8 +22,22 @@ const columns = [
 ];
 
 const SingleLeg: React.FC = () => {
+    const memberStore = useStore(MembersContext);
 
-    const data: any = [];
+    useEffect(() => {
+        async function load() {
+            if (memberStore.singleLeg.length === 0) {
+                await memberStore.loadSingleLeg();
+            }
+        }
+        load();
+        // eslint-disable-next-line
+    }, []);
+
+    const data = memberStore.singleLeg.map((m, key) => {
+        const { id, name, activatedAt } = m;
+        return { key, id, name, activatedAt: new Date(activatedAt).toUTCString() };
+    })
 
     return (
         <React.Fragment>
