@@ -2,7 +2,7 @@ export interface BankDetails {
     accountName: string;
     bankName: string;
     accountNumber: number;
-    isfc: number;
+    isfc: string;
     accountType: string;
 }
 
@@ -13,15 +13,25 @@ export interface User {
     sponsoredBy: Pick<User, 'id' | 'name'> | null;
     epinId: string | null;
     bankDetails: BankDetails | null;
-    panNumber: number | null;
+    panNumber: string | null;
     roll: 'user' | 'admin';
     status: 'active' | 'inactive';
     activatedAt: Date | null;
-    balance: number;
-    rank: string | null;
     updatedAt: Date;
     createdAt: Date;
     token: string;
+}
+
+export interface UserDetails {
+    wallet: number;
+    rank: string | null;
+    direct: number;
+    downline: number;
+    singleLeg: number;
+    levelIncome: number;
+    ROI: number;
+    totalWithdrawal: number;
+    totalIncome: number;
 }
 
 export interface Member {
@@ -64,6 +74,25 @@ export interface ROI {
     createdAt: Date;
 }
 
+export interface Withdrawal extends BankDetails {
+    id: string;
+    withdrawAmount: number;
+    netAmount: number;
+    processedAt: Date | null;
+    paymentType: string;
+    status: 'paid' | 'unpaid' | 'cancelled';
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export interface Transaction {
+    credit?: number;
+    debit?: number;
+    currentBalance: number;
+    remarks: string;
+    createdAt: Date;
+}
+
 export interface RegistrationDTO {
     name: string;
     mobile: number;
@@ -74,4 +103,15 @@ export interface RegistrationDTO {
 export interface LoginDTO {
     userId: string;
     password: string;
+}
+
+export interface PasswordDTO {
+    oldPassword: string;
+    newPassword: string;
+}
+
+export interface ProfileUpdateDTO {
+    name?: string;
+    mobile?: number;
+    panNumber?: string;
 }

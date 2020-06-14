@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Table, Divider } from 'antd';
 import { useStore } from '../../utils/hooks';
 import { MembersContext } from '../../store';
+import { observer } from 'mobx-react-lite';
 
 const columns = [
     {
@@ -47,4 +48,4 @@ const SingleLeg: React.FC = () => {
     );
 };
 
-export default SingleLeg;
+export default observer(SingleLeg);

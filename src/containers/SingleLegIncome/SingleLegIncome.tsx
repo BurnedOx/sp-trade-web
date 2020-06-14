@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Table, Divider } from 'antd';
 import { useStore } from '../../utils/hooks';
 import { IncomeContext } from '../../store';
+import { observer } from 'mobx-react-lite';
 
 const columns = [
     {
@@ -51,10 +52,10 @@ const SingleLegIncome: React.FC = () => {
 
     return (
         <React.Fragment>
-            <Divider orientation="left" style={{ color: '#333' }}>Single Leg Members</Divider>
+            <Divider orientation="left" style={{ color: '#333' }}>Single Leg Incomes</Divider>
             <Table columns={columns} dataSource={data} scroll={{ x: '100%' }} />
         </React.Fragment>
     );
 };
 
-export default SingleLegIncome;
+export default observer(SingleLegIncome);

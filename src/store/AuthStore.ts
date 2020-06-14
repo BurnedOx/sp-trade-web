@@ -1,8 +1,9 @@
 import { observable, action } from 'mobx';
-import { User, RegistrationDTO, LoginDTO } from '../interfaces';
+import { User, RegistrationDTO, LoginDTO, ProfileUpdateDTO, BankDetails } from '../interfaces';
 import Api from '../api';
 import { MembersStore } from './MembersStore';
 import { IncomeStore } from './IncomeStore';
+import { WithrawalStore } from './withdrawalStore';
 
 export default class AuthStore {
     @observable user: User | null = null;
@@ -11,6 +12,7 @@ export default class AuthStore {
         user: User | null,
         private membersStore: MembersStore,
         private incomeStore: IncomeStore,
+        private withdrawalStore: WithrawalStore,
     ) {
         this.user = user;
     }
@@ -36,10 +38,34 @@ export default class AuthStore {
         return user;
     }
 
+    @action.bound
+    async updateProfile(data: ProfileUpdateDTO) {
+        if (!this.user) return;
+        await Api.updateProfile(data);
+        const {name, mobile, panNumber} = data;
+        const newUser = {...this.user};
+        newUser.name = name ?? this.user.name;
+        newUser.mobile = mobile ?? this.user.mobile;
+        newUser.panNumber = panNumber ?? null;
+        this.user = {...newUser};
+        return newUser;
+    }
+
+    @action.bound
+    async updateBankDetails(data: BankDetails) {
+        if (!this.user) return;
+        await Api.updateBankDetails(data);
+        const newUser = {...this.user};
+        newUser.bankDetails = data;
+        this.user = {...newUser};
+        return newUser;
+    }
+
     @action
     logout() {
         this.user = null;
         this.membersStore.clearStore();
         this.incomeStore.clearStore();
+        this.withdrawalStore.clearStore();
     }
 }

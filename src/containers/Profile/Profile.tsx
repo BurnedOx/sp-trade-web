@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useStore } from '../../utils/hooks';
 import { AuthContext } from '../../store';
-import { Descriptions, Button } from 'antd';
+import { Descriptions, Space, Button } from 'antd';
 import { observer } from 'mobx-react-lite';
+import Password from '../../components/Password/Password';
+import BankForm from '../../components/BankForm/BankForm';
+import ProfileForm from '../../components/ProfileForm/ProfileForm';
 
 const Profile: React.FC = () => {
+    const [editPassword, setEditPassword] = useState(false);
+    const [editBank, setEditBank] = useState(false);
+    const [editProfile, setEditProfile] = useState(false);
+
     const authStore = useStore(AuthContext);
     const { user } = authStore;
+
+    const toggleEditPassword = () => setEditPassword(s => !s);
+    const toggleEditBank = () => setEditBank(s => !s);
+    const toggleEditProfile = () => setEditProfile(s => !s);
 
     const handleLogOut = () => {
         localStorage.removeItem('user');
@@ -14,7 +25,7 @@ const Profile: React.FC = () => {
     };
 
     return (
-        <div>
+        <>
             <Descriptions title="User Info" layout="vertical">
                 <Descriptions.Item label="Name">{user?.name}</Descriptions.Item>
                 <Descriptions.Item label="Id">{user?.id}</Descriptions.Item>
@@ -45,9 +56,22 @@ const Profile: React.FC = () => {
                         </React.Fragment>
                         : <p>No Details Provided</p>
                 }
+
             </Descriptions>
-            <Button onClick={handleLogOut}>Logout</Button>
-        </div>
+
+            <Space size="middle">
+                <Button onClick={toggleEditProfile}>Edit Profile</Button>
+                <Button onClick={toggleEditBank}>
+                    {user?.bankDetails === null ? "Add Bank Details" : "Update Bank Details"}
+                </Button>
+                <Button onClick={toggleEditPassword}>Change Password</Button>
+                <Button onClick={handleLogOut}>Logout</Button>
+            </Space>
+
+            <ProfileForm visible={editProfile} toggle={toggleEditProfile} />
+            <BankForm visible={editBank} toggle={toggleEditBank} />
+            <Password visible={editPassword} toggle={toggleEditPassword} />
+        </>
     );
 };
 

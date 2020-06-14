@@ -45,6 +45,7 @@ const Cards: React.FC = () => {
                     size="small"
                     title="Dierct Members"
                     extra={<Link to='/direct'>View</Link>}
+                    color='red'
                     hoverable
                 >
                     <p>{membersStore.directs.length}</p>

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import './Dashboard.scss';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '../../utils/hooks';
 import { AuthContext } from '../../store';
 import { Input, Button, Tag, Divider, Card } from 'antd';
 import Cards from '../../components/Cards/Cards';
 import { RouteComponentProps } from 'react-router-dom';
+
 const { Meta } = Card;
 
 const Dashboard: React.FC<RouteComponentProps> = (props) => {
@@ -20,7 +22,7 @@ const Dashboard: React.FC<RouteComponentProps> = (props) => {
     };
 
     return (
-        <div>
+        <div className="dashboard">
             <Card hoverable title="Me" style={{ width: 240 }} onClick={() => props.history.push('/profile')}>
                 <Meta title={authStore.user?.name} description={authStore.user?.id} />
                 <Tag

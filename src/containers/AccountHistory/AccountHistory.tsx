@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table, Divider } from 'antd';
+import { observer } from 'mobx-react-lite';
 
 const columns = [
     {
@@ -46,4 +47,4 @@ const AccountHistory: React.FC = () => {
     );
 };
 
-export default AccountHistory;
+export default observer(AccountHistory);

@@ -12,6 +12,8 @@ import Profile from './containers/Profile/Profile';
 import SingleLeg from './containers/SIngleLeg/SingleLeg';
 import SingleLegIncome from './containers/SingleLegIncome/SingleLegIncome';
 import AccountHistory from './containers/AccountHistory/AccountHistory';
+import WithdrawalFund from './containers/WithdrawalFund/WithdrawalFund';
+import WithdrawReport from './containers/WithdrawReport/WithdrawReport';
 
 const App: React.FC = () => {
   return (
@@ -28,6 +30,8 @@ const App: React.FC = () => {
           <Route path='/level-incomes' component={LevelIncome} />
           <Route path='/single-leg-incomes' component={SingleLegIncome} />
           <Route path='/account-history' component={AccountHistory} />
+          <Route path='/withdraw' component={WithdrawalFund} />
+          <Route path='/withdraw-report' component={WithdrawReport} />
         </AppLayout>
       </Switch>
     </ContextProvider>
