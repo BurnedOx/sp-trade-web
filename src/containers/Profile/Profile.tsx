@@ -33,11 +33,11 @@ const Profile: React.FC = () => {
                 <Descriptions.Item label="Sponsored By Id">{user?.sponsoredBy?.id}</Descriptions.Item>
                 <Descriptions.Item label="Sponsored BY">{user?.sponsoredBy?.name}</Descriptions.Item>
                 <Descriptions.Item label="Status">{user?.status}</Descriptions.Item>
-                <Descriptions.Item label="Rank">{user?.rank}</Descriptions.Item>
+                {/* <Descriptions.Item label="Rank">{user?.rank}</Descriptions.Item> */}
                 <Descriptions.Item label="Activated At">
                     {user?.activatedAt ? new Date(user.activatedAt).toUTCString() : null}
                 </Descriptions.Item>
-                <Descriptions.Item label="Balance">{user?.balance}</Descriptions.Item>
+                {/* <Descriptions.Item label="Balance">{user?.balance}</Descriptions.Item> */}
                 <Descriptions.Item label="D.O.J">
                     {user ? new Date(user.createdAt).toUTCString() : null}
                 </Descriptions.Item>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, Divider } from 'antd';
 import { useStore } from '../../utils/hooks';
 import { IncomeContext } from '../../store';
@@ -39,11 +39,17 @@ const columns = [
 
 const LevelIncome: React.FC = () => {
     const levelIncomeStore = useStore(IncomeContext);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         async function fetchMembers() {
             if (levelIncomeStore.levelIncomes.length === 0) {
-                await levelIncomeStore.loadLevelIncomes()
+                setLoading(true);
+                try {
+                    await levelIncomeStore.loadLevelIncomes()
+                } finally {
+                    setLoading(false);
+                }
             }
         }
         fetchMembers();
@@ -63,7 +69,7 @@ const LevelIncome: React.FC = () => {
     return (
         <React.Fragment>
             <Divider orientation="left" style={{ color: '#333' }}>Level Income Details</Divider>
-            <Table columns={columns} dataSource={data} scroll={{ x: '100%' }} />
+            <Table loading={loading} columns={columns} dataSource={data} scroll={{ x: '100%' }} />
         </React.Fragment>
     );
 };

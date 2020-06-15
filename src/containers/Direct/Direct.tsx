@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, Divider } from 'antd';
 import { useStore } from '../../utils/hooks';
 import { MembersContext } from '../../store';
@@ -39,11 +39,17 @@ const columns = [
 
 const Direct: React.FC = () => {
     const membersStore = useStore(MembersContext);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         async function fetchMembers() {
             if (membersStore.directs.length === 0) {
-                await membersStore.loadDirect();
+                setLoading(true);
+                try {
+                    await membersStore.loadDirect();
+                } finally {
+                    setLoading(false);
+                }
             }
         }
         fetchMembers();
@@ -60,7 +66,7 @@ const Direct: React.FC = () => {
     return (
         <React.Fragment>
             <Divider orientation="left" style={{ color: '#333' }}>Direct Members</Divider>
-            <Table columns={columns} dataSource={data} scroll={{ x: '100%' }} />
+            <Table loading={loading} columns={columns} dataSource={data} scroll={{ x: '100%' }} />
         </React.Fragment>
     );
 };

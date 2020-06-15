@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, Divider } from 'antd';
 import { useStore } from '../../utils/hooks';
 import { WithdrawalContext } from '../../store';
@@ -64,12 +64,18 @@ const columns = [
 
 const WithdrawalReport: React.FC = () => {
     const withdrawalStore = useStore(WithdrawalContext);
+    const [loading, setLoading] = useState(false);
     const { withdrawals } = withdrawalStore;
 
     useEffect(() => {
         async function load() {
             if (withdrawals.length === 0) {
-                await withdrawalStore.getWithdrawals();
+                setLoading(true);
+                try {
+                    await withdrawalStore.getWithdrawals();
+                } finally {
+                    setLoading(false);
+                }
             }
         }
         load();
@@ -89,7 +95,7 @@ const WithdrawalReport: React.FC = () => {
     return (
         <React.Fragment>
             <Divider orientation="left" style={{ color: '#333' }}>Withdrawal Reports</Divider>
-            <Table columns={columns} dataSource={data} scroll={{ x: '100%' }} />
+            <Table loading={loading} columns={columns} dataSource={data} scroll={{ x: '100%' }} />
         </React.Fragment>
     );
 };

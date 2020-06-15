@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, Divider } from 'antd';
 import { observer } from 'mobx-react-lite';
+import { useStore } from '../../utils/hooks';
+import { TransactionContext } from '../../store';
 
 const columns = [
     {
@@ -10,8 +12,8 @@ const columns = [
     },
     {
         title: 'Tr Date',
-        dataIndex: 'trDate',
-        key: 'trDate',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
     },
     {
         title: 'Credit',
@@ -36,13 +38,35 @@ const columns = [
 ];
 
 const AccountHistory: React.FC = () => {
+    const trxStore = useStore(TransactionContext);
+    const [loading, setLoading] = useState(false);
 
-    const data: any = [];
+    useEffect(() => {
+        async function load() {
+            setLoading(true);
+            try {
+                await trxStore.loadTransactions();
+            } finally {
+                setLoading(false);
+            }
+        }
+        if (trxStore.transactions.length === 0) {
+            load();
+        }
+        // eslint-disable-next-line
+    }, []);
+
+    const data = trxStore.transactions.map((t, i) => ({
+        ...t,
+        slNo: i,
+        key: i,
+        createdAt: t.createdAt.toLocaleString()
+    }));
 
     return (
         <React.Fragment>
             <Divider orientation="left" style={{ color: '#333' }}>Account History</Divider>
-            <Table columns={columns} dataSource={data} scroll={{ x: '100%' }} />
+            <Table loading={loading} columns={columns} dataSource={data} scroll={{ x: '100%' }} />
         </React.Fragment>
     );
 };

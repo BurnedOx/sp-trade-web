@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, Divider } from 'antd';
 import { useStore } from '../../utils/hooks';
 import { MembersContext } from '../../store';
@@ -39,11 +39,17 @@ const columns = [
 
 const Downline: React.FC = () => {
     const membersStore = useStore(MembersContext);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         async function fetchMembers() {
             if (membersStore.dowlines.length === 0) {
-                await membersStore.loadDownline();
+                setLoading(true);
+                try {
+                    await membersStore.loadDownline();
+                } finally {
+                    setLoading(false);
+                }
             }
         }
         fetchMembers();
@@ -60,7 +66,7 @@ const Downline: React.FC = () => {
     return (
         <React.Fragment>
             <Divider orientation="left" style={{ color: '#333' }}>My Downline</Divider>
-            <Table columns={columns} dataSource={data} scroll={{ x: '100%' }} />
+            <Table loading={loading} columns={columns} dataSource={data} scroll={{ x: '100%' }} />
         </React.Fragment>
     );
 };

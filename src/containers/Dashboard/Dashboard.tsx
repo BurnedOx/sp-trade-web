@@ -6,6 +6,7 @@ import { AuthContext } from '../../store';
 import { Input, Button, Tag, Divider, Card } from 'antd';
 import Cards from '../../components/Cards/Cards';
 import { RouteComponentProps } from 'react-router-dom';
+import ReferralLink from '../../components/ReferralLink/ReferralLink';
 
 const { Meta } = Card;
 
@@ -39,7 +40,7 @@ const Dashboard: React.FC<RouteComponentProps> = (props) => {
                             onChange={e => setPin(e.target.value)} />
                         <Button loading={loading} onClick={handleActive}>Activate</Button>
                     </div>
-                    : null
+                    : <ReferralLink />
             }
             <Divider orientation="left" style={{ color: '#333', fontWeight: 'normal' }}>Cards</Divider>
 

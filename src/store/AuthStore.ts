@@ -1,18 +1,21 @@
 import { observable, action } from 'mobx';
-import { User, RegistrationDTO, LoginDTO, ProfileUpdateDTO, BankDetails } from '../interfaces';
+import { User, RegistrationDTO, LoginDTO, ProfileUpdateDTO, BankDetails, UserDetails } from '../interfaces';
 import Api from '../api';
 import { MembersStore } from './MembersStore';
 import { IncomeStore } from './IncomeStore';
 import { WithrawalStore } from './withdrawalStore';
+import { TransactionStore } from './TransactionStore';
 
 export default class AuthStore {
     @observable user: User | null = null;
+    @observable details: UserDetails | null = null;
 
     constructor(
         user: User | null,
         private membersStore: MembersStore,
         private incomeStore: IncomeStore,
         private withdrawalStore: WithrawalStore,
+        private transactionStore: TransactionStore,
     ) {
         this.user = user;
     }
@@ -29,6 +32,12 @@ export default class AuthStore {
         const user = await Api.login(data);
         this.user = user;
         return user;
+    }
+
+    @action
+    async loadDetails() {
+        const details = await Api.getUserDetails();
+        this.details = details;
     }
 
     @action
@@ -64,8 +73,10 @@ export default class AuthStore {
     @action
     logout() {
         this.user = null;
+        this.details = null;
         this.membersStore.clearStore();
         this.incomeStore.clearStore();
         this.withdrawalStore.clearStore();
+        this.transactionStore.clearStore();
     }
 }

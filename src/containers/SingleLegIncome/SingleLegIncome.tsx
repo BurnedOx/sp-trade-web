@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, Divider } from 'antd';
 import { useStore } from '../../utils/hooks';
 import { IncomeContext } from '../../store';
@@ -34,11 +34,17 @@ const columns = [
 
 const SingleLegIncome: React.FC = () => {
     const incomeStore = useStore(IncomeContext);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         async function load() {
             if (incomeStore.roiIncomes.length === 0) {
-                await incomeStore.loadRoiIncomes();
+                setLoading(true);
+                try {
+                    await incomeStore.loadRoiIncomes();
+                } finally {
+                    setLoading(false);
+                }
             }
         }
         load();
@@ -53,7 +59,7 @@ const SingleLegIncome: React.FC = () => {
     return (
         <React.Fragment>
             <Divider orientation="left" style={{ color: '#333' }}>Single Leg Incomes</Divider>
-            <Table columns={columns} dataSource={data} scroll={{ x: '100%' }} />
+            <Table loading={loading} columns={columns} dataSource={data} scroll={{ x: '100%' }} />
         </React.Fragment>
     );
 };

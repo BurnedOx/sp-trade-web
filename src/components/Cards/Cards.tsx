@@ -1,54 +1,50 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import './Card.scss';
 import { Row, Col, Card } from 'antd';
 import { Link } from 'react-router-dom';
 import { useStore } from '../../utils/hooks';
-import { AuthContext, MembersContext, IncomeContext } from '../../store';
+import { AuthContext } from '../../store';
 import { observer } from 'mobx-react-lite';
 
 const Cards: React.FC = () => {
     const authStore = useStore(AuthContext);
-    const membersStore = useStore(MembersContext);
-    const incomeStore = useStore(IncomeContext);
+    const [loading, setLoading] = useState(false);
+    const { details } = authStore;
 
     useEffect(() => {
         async function loadAll() {
-            if (membersStore.directs.length === 0) {
-                await membersStore.loadDirect();
-            }
-            if (membersStore.dowlines.length === 0) {
-                await membersStore.loadDownline();
-            }
-            if (membersStore.singleLeg.length === 0) {
-                await membersStore.loadSingleLeg();
-            }
-            if (incomeStore.levelIncomes.length === 0) {
-                await incomeStore.loadLevelIncomes();
-            }
-            if (incomeStore.roiIncomes.length === 0) {
-                await incomeStore.loadRoiIncomes();
+            setLoading(true);
+            try {
+                await authStore.loadDetails();
+            } finally {
+                setLoading(false);
             }
         }
         loadAll();
         // eslint-disable-next-line
     }, []);
 
-    let totalIncome = incomeStore.levelIncomes.length !== 0
-        ? incomeStore.levelIncomes
-            .map(i => i.amount)
-            .reduce((a, b) => a + b)
-        : 0;
-
     return (
-        <Row className='row' gutter={[16, 24]} style={{ background: '#f0f2f5' }}>
+        <Row className={loading ? 'row cards-loading': 'row'} gutter={[16, 24]} style={{ background: '#f0f2f5' }}>
+            <Col className="gutter-row" span={6}>
+                <Card
+                    size="small"
+                    title="Rank"
+                    loading={loading}
+                    hoverable
+                >
+                    <p>{details?.rank ?? "Unavailable"}</p>
+                </Card>
+            </Col>
             <Col className="gutter-row" span={6}>
                 <Card
                     size="small"
                     title="Dierct Members"
                     extra={<Link to='/direct'>View</Link>}
-                    color='red'
+                    loading={loading}
                     hoverable
                 >
-                    <p>{membersStore.directs.length}</p>
+                    <p>{details?.direct ?? "Unavailable"}</p>
                 </Card>
             </Col>
             <Col className="gutter-row" span={6}>
@@ -56,9 +52,10 @@ const Cards: React.FC = () => {
                     size="small"
                     title="My Downline"
                     extra={<Link to='/downline'>View</Link>}
+                    loading={loading}
                     hoverable
                 >
-                    <p>{membersStore.dowlines.length}</p>
+                    <p>{details?.downline ?? "Unavailable"}</p>
                 </Card>
             </Col>
             <Col className="gutter-row" span={6}>
@@ -66,18 +63,20 @@ const Cards: React.FC = () => {
                     size="small"
                     title="Level Income"
                     extra={<Link to='/level-incomes'>View</Link>}
+                    loading={loading}
                     hoverable
                 >
-                    <p>{incomeStore.levelIncomes.length}</p>
+                    <p>{details?.levelIncome ?? "Unavailable"}</p>
                 </Card>
             </Col>
             <Col className="gutter-row" span={6}>
                 <Card
                     size="small"
                     title="My Walet"
+                    loading={loading}
                     hoverable
                 >
-                    <p>{authStore.user?.balance}</p>
+                    <p>{details?.wallet ?? "Unavailable"}</p>
                 </Card>
             </Col>
             <Col className="gutter-row" span={6}>
@@ -85,9 +84,10 @@ const Cards: React.FC = () => {
                     size="small"
                     title="Single-leg Members"
                     extra={<Link to='/single-leg'>View</Link>}
+                    loading={loading}
                     hoverable
                 >
-                    <p>{membersStore.singleLeg.length}</p>
+                    <p>{details?.singleLeg ?? "Unavailable"}</p>
                 </Card>
             </Col>
             <Col className="gutter-row" span={6}>
@@ -95,15 +95,17 @@ const Cards: React.FC = () => {
                     size="small"
                     title="ROI Income"
                     extra={<Link to='/single-leg-incomes'>View</Link>}
+                    loading={loading}
                     hoverable
                 >
-                    <p>{incomeStore.roiIncomes.length}</p>
+                    <p>{details?.ROI ?? "Unavailable"}</p>
                 </Card>
             </Col>
             <Col className="gutter-row" span={6}>
                 <Card
                     size="small"
                     title="Auto-Pull Income"
+                    loading={loading}
                     hoverable
                 >
                     <p>Unavailable</p>
@@ -113,18 +115,20 @@ const Cards: React.FC = () => {
                 <Card
                     size="small"
                     title="Total Withdrawl"
+                    loading={loading}
                     hoverable
                 >
-                    <p>Unavailable</p>
+                    <p>{details?.totalWithdrawal ?? "Unavailable"}</p>
                 </Card>
             </Col>
             <Col className="gutter-row" span={6}>
                 <Card
                     size="small"
                     title="Total Income"
+                    loading={loading}
                     hoverable
                 >
-                    <p>{totalIncome}</p>
+                    <p>{details?.totalIncome ?? "Unavailable"}</p>
                 </Card>
             </Col>
         </Row>
