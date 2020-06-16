@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite';
 import Password from '../../components/Password/Password';
 import BankForm from '../../components/BankForm/BankForm';
 import ProfileForm from '../../components/ProfileForm/ProfileForm';
+import { isMobile } from 'react-device-detect';
 
 const Profile: React.FC = () => {
     const [editPassword, setEditPassword] = useState(false);
@@ -59,7 +60,7 @@ const Profile: React.FC = () => {
 
             </Descriptions>
 
-            <Space size="middle">
+            <Space direction={isMobile ? 'vertical' : 'horizontal'} size="middle">
                 <Button onClick={toggleEditProfile}>Edit Profile</Button>
                 <Button onClick={toggleEditBank}>
                     {user?.bankDetails === null ? "Add Bank Details" : "Update Bank Details"}
