@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { Store } from 'antd/lib/form/interface';
 import { Link, Redirect } from 'react-router-dom';
-import { useStore } from '../../utils/hooks';
+import { useStore, useQuery } from '../../utils/hooks';
 import { AuthContext } from '../../store';
 import { observer } from 'mobx-react-lite';
 import logo from '../../assets/logo.jpeg';
@@ -19,6 +19,8 @@ const tailLayout = {
 const Register: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const authStore = useStore(AuthContext);
+    const query = useQuery();
+    const refId = query.get("ref");
 
     const onFinish = async (values: Store) => {
         setLoading(true);
@@ -44,7 +46,7 @@ const Register: React.FC = () => {
             <Form
                 {...layout}
                 name="basic"
-                initialValues={{ remember: true }}
+                initialValues={{ remember: true, sponsorId: refId ?? '' }}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
             >
@@ -69,7 +71,7 @@ const Register: React.FC = () => {
                     name="sponsorId"
                     rules={[{ required: true, message: 'Please input your sponsor id!' }]}
                 >
-                    <Input />
+                    <Input disabled={!!refId} />
                 </Form.Item>
 
                 <Form.Item

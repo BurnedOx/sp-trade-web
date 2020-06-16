@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { useLocation } from 'react-router-dom';
 
 export function useStore<T> (Context: React.Context<T | undefined>) {
     const context = useContext(Context);
@@ -7,3 +8,7 @@ export function useStore<T> (Context: React.Context<T | undefined>) {
     }
     return context;
 };
+
+export function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
